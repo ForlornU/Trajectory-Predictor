@@ -1,0 +1,60 @@
+{
+    "name": "PlayerInputActions",
+    "maps": [
+        {
+            "name": "pActionMap",
+            "id": "76acbe3a-fb8c-4fe7-ad68-2e861a575141",
+            "actions": [
+                {
+                    "name": "MouseLook",
+                    "type": "Value",
+                    "id": "bcecdc6d-85a9-496c-b9be-f41ab2246e57",
+                    "expectedControlType": "Delta",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "6da358a4-eb10-4a84-8e1c-d1be3ab7e0c3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a49bd39f-b5b1-404f-a47f-c547d4852f46",
+                    "path": "<Pointer>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "pControlScheme",
+                    "action": "MouseLook",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e3bc6539-3d57-4a0b-a2e0-537c96c20566",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "pControlScheme",
+            "bindingGroup": "pControlScheme",
+            "devices": []
+        }
+    ]
+}
