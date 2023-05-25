@@ -19,14 +19,16 @@ public class ProjectileThrow : MonoBehaviour
 
     void Start()
     {
-        trajectoryPredictor = GetComponent<TrajectoryPredictor>();
 
-        if (StartPosition == null)
-            StartPosition = transform;
     }
 
     void OnEnable()
     {
+        trajectoryPredictor = GetComponent<TrajectoryPredictor>();
+
+        if (StartPosition == null)
+            StartPosition = transform;
+
         fire.Enable();
         fire.performed += ThrowObject;
     }
@@ -38,8 +40,13 @@ public class ProjectileThrow : MonoBehaviour
 
     void Predict()
     {
-        Rigidbody r = objectToThrow.GetComponent<Rigidbody>();
+        trajectoryPredictor.PredictTrajectory(ProjectileData());
+    }
+
+    ProjectileProperties ProjectileData()
+    {
         ProjectileProperties properties = new ProjectileProperties();
+        Rigidbody r = objectToThrow.GetComponent<Rigidbody>();
 
         properties.direction = StartPosition.forward;
         properties.initialPosition = StartPosition.position;
@@ -47,7 +54,7 @@ public class ProjectileThrow : MonoBehaviour
         properties.mass = r.mass;
         properties.drag = r.drag;
 
-        trajectoryPredictor.PredictTrajectory(properties);
+        return properties;
     }
 
     void ThrowObject(InputAction.CallbackContext ctx)
