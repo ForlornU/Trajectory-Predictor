@@ -35,14 +35,14 @@ public class MouseLook : MonoBehaviour
 
     }
 
-    Vector2 ScaleAndSmooth(Vector2 _delta)
+    Vector2 ScaleAndSmooth(Vector2 delta)
     {
         //Apply sensetivity
-        _delta = Vector2.Scale(_delta, new Vector2(sensitivity.x * smoothing.x, sensitivity.y * smoothing.y));
+        delta = Vector2.Scale(delta, new Vector2(sensitivity.x * smoothing.x, sensitivity.y * smoothing.y));
 
         //Lerp from last frame
-        smoothMouse.x = Mathf.Lerp(smoothMouse.x, _delta.x, 1f / smoothing.x);
-        smoothMouse.y = Mathf.Lerp(smoothMouse.y, _delta.y, 1f / smoothing.y);
+        smoothMouse.x = Mathf.Lerp(smoothMouse.x, delta.x, 1f / smoothing.x);
+        smoothMouse.y = Mathf.Lerp(smoothMouse.y, delta.y, 1f / smoothing.y);
 
         return smoothMouse;
     }
@@ -50,9 +50,7 @@ public class MouseLook : MonoBehaviour
     void LateUpdate()
     {
         if (lockCursor)
-        {
             Cursor.lockState = CursorLockMode.Locked;
-        }
 
         Vector2 mouseDelta = input.pActionMap.MouseLook.ReadValue<Vector2>();
         mouseFinal += ScaleAndSmooth(mouseDelta);
@@ -80,16 +78,17 @@ public class MouseLook : MonoBehaviour
     void AlignToBody()
     {
         var targetCharacterOrientation = Quaternion.Euler(targetCharacterDirection);
+        Quaternion yRotation = Quaternion.identity;
 
         // If there's a character body that acts as a parent to the camera
         if (characterBody)
         {
-            var yRotation = Quaternion.AngleAxis(mouseFinal.x, Vector3.up);
+            yRotation = Quaternion.AngleAxis(mouseFinal.x, Vector3.up);
             characterBody.transform.localRotation = yRotation * targetCharacterOrientation;
         }
         else
         {
-            var yRotation = Quaternion.AngleAxis(mouseFinal.x, transform.InverseTransformDirection(Vector3.up));
+            yRotation = Quaternion.AngleAxis(mouseFinal.x, transform.InverseTransformDirection(Vector3.up));
             transform.localRotation *= yRotation;
         }
     }
