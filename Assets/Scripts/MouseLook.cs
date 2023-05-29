@@ -3,26 +3,25 @@ using UnityEngine;
 public class MouseLook : MonoBehaviour
 {
     #region variables
-    Vector2 _mouseFinal;
-    Vector2 _smoothMouse;
-
-    public Vector2 clampInDegrees = new Vector2(360, 180);
-    public bool lockCursor;
-
-    public Vector2 sensitivity = new Vector2(2, 2);
-    public Vector2 smoothing = new Vector2(3, 3);
+    Vector2 mouseFinal;
+    Vector2 smoothMouse;
     Vector2 targetDirection;
     Vector2 targetCharacterDirection;
 
+    public Vector2 clampInDegrees = new Vector2(360f, 180f);
+    public Vector2 sensitivity = new Vector2(0.1f, 0.1f);
+    public Vector2 smoothing = new Vector2(1f, 1f);
+
+    public bool lockCursor;
     public GameObject characterBody;
 
-    public PlayerInputActions _input;
+    public PlayerInputActions input;
     #endregion
     
     private void OnEnable()
     {
-        _input = new PlayerInputActions();
-        _input.Enable();
+        input = new PlayerInputActions();
+        input.Enable();
     }
 
     void Start()
@@ -42,10 +41,10 @@ public class MouseLook : MonoBehaviour
         _delta = Vector2.Scale(_delta, new Vector2(sensitivity.x * smoothing.x, sensitivity.y * smoothing.y));
 
         //Lerp from last frame
-        _smoothMouse.x = Mathf.Lerp(_smoothMouse.x, _delta.x, 1f / smoothing.x);
-        _smoothMouse.y = Mathf.Lerp(_smoothMouse.y, _delta.y, 1f / smoothing.y);
+        smoothMouse.x = Mathf.Lerp(smoothMouse.x, _delta.x, 1f / smoothing.x);
+        smoothMouse.y = Mathf.Lerp(smoothMouse.y, _delta.y, 1f / smoothing.y);
 
-        return _smoothMouse;
+        return smoothMouse;
     }
 
     void LateUpdate()
@@ -55,8 +54,8 @@ public class MouseLook : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        Vector2 mouseDelta = _input.pActionMap.MouseLook.ReadValue<Vector2>();
-        _mouseFinal += ScaleAndSmooth(mouseDelta);
+        Vector2 mouseDelta = input.pActionMap.MouseLook.ReadValue<Vector2>();
+        mouseFinal += ScaleAndSmooth(mouseDelta);
 
         ClampValues();
         AlignToBody();
@@ -66,15 +65,15 @@ public class MouseLook : MonoBehaviour
     {
         // Clamp and apply the local x value first
         if (clampInDegrees.x < 360)
-            _mouseFinal.x = Mathf.Clamp(_mouseFinal.x, -clampInDegrees.x * 0.5f, clampInDegrees.x * 0.5f);
+            mouseFinal.x = Mathf.Clamp(mouseFinal.x, -clampInDegrees.x * 0.5f, clampInDegrees.x * 0.5f);
 
         // Then clamp y value.
         if (clampInDegrees.y < 360)
-            _mouseFinal.y = Mathf.Clamp(_mouseFinal.y, -clampInDegrees.y * 0.5f, clampInDegrees.y * 0.5f);
+            mouseFinal.y = Mathf.Clamp(mouseFinal.y, -clampInDegrees.y * 0.5f, clampInDegrees.y * 0.5f);
 
         // Allow the script to clamp based on a desired target value.
         var targetOrientation = Quaternion.Euler(targetDirection);
-        transform.localRotation = Quaternion.AngleAxis(-_mouseFinal.y, targetOrientation * Vector3.right) * targetOrientation;
+        transform.localRotation = Quaternion.AngleAxis(-mouseFinal.y, targetOrientation * Vector3.right) * targetOrientation;
 
     }
 
@@ -85,12 +84,12 @@ public class MouseLook : MonoBehaviour
         // If there's a character body that acts as a parent to the camera
         if (characterBody)
         {
-            var yRotation = Quaternion.AngleAxis(_mouseFinal.x, Vector3.up);
+            var yRotation = Quaternion.AngleAxis(mouseFinal.x, Vector3.up);
             characterBody.transform.localRotation = yRotation * targetCharacterOrientation;
         }
         else
         {
-            var yRotation = Quaternion.AngleAxis(_mouseFinal.x, transform.InverseTransformDirection(Vector3.up));
+            var yRotation = Quaternion.AngleAxis(mouseFinal.x, transform.InverseTransformDirection(Vector3.up));
             transform.localRotation *= yRotation;
         }
     }

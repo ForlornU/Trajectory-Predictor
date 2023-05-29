@@ -5,13 +5,13 @@ using UnityEngine;
 public class TrajectoryPredictor : MonoBehaviour
 {
     #region Members
-    private LineRenderer trajectoryLine;
+    LineRenderer trajectoryLine;
     [SerializeField, Tooltip("The marker will show where the projectile will hit")]
-    private Transform hitMarker;
+    Transform hitMarker;
     [SerializeField, Range(10, 100), Tooltip("The maximum number of points the LineRenderer can have")]
-    private int maxPoints = 50;
+    int maxPoints = 50;
     [SerializeField, Range(0.01f, 0.5f), Tooltip("The time increment used to calculate the trajectory")]
-    private float increment = 0.025f;
+    float increment = 0.025f;
     [SerializeField, Range(1.05f, 2f), Tooltip("The raycast overlap between points in the trajectory, this is a multiplier of the length between points. 2 = twice as long")]
     float rayOverlap = 1.1f;
     #endregion
@@ -53,7 +53,7 @@ public class TrajectoryPredictor : MonoBehaviour
             //If nothing is hit, continue rendering the arc without a visual marker
             hitMarker.gameObject.SetActive(false);
             position = nextPosition;
-            UpdateLineRender(maxPoints, (i, position));
+            UpdateLineRender(maxPoints, (i, position)); //Unneccesary to set count here, but not harmful
         }
     }
     /// <summary>
@@ -87,7 +87,6 @@ public class TrajectoryPredictor : MonoBehaviour
     public void SetTrajectoryVisible(bool visible)
     {
         trajectoryLine.enabled = visible;
-        if (visible == false)
-            hitMarker.gameObject.SetActive(false);
+        hitMarker.gameObject.SetActive(visible);
     }
 }

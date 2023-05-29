@@ -2119,7 +2119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitMarker: {fileID: 1344369681}
   maxPoints: 50
-  increment: 0.025
+  increment: 0.04
   rayOverlap: 1.1
 --- !u!120 &919132148091192098
 LineRenderer:
