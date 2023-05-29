@@ -10,3 +10,5 @@ https://www.youtube.com/watch?v=rgJGkYM2_6E&ab_channel=ForlornU
 
 This project uses the "new" unity input system, if you are trying to only copy the scripts into an already existing project
 you need to setup that input handling, see video walkthrough for any questions
+
+This is an entire unity project however and you can download and use the entire thing
