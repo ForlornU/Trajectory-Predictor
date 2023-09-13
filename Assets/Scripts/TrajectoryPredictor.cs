@@ -26,7 +26,7 @@ public class TrajectoryPredictor : MonoBehaviour
 
     public void PredictTrajectory(ProjectileProperties projectile)
     {
-        Vector3 velocity = projectile.initialSpeed / projectile.mass * projectile.direction;
+        Vector3 velocity =  projectile.direction * (projectile.initialSpeed / projectile.mass);
         Vector3 position = projectile.initialPosition;
         Vector3 nextPosition;
         float overlap;
